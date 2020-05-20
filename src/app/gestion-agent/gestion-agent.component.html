@@ -1,0 +1,185 @@
+<app-nav *ngIf="isLoggedIn; else loggedOut"></app-nav>
+<section class="content home" *ngIf="isLoggedIn">
+    <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card mt-5">
+                      <div class="container">
+  <div class="breadcrumb mt-3">
+  <button type="button" name="add" id="add_data" class="btn btn-success btn-sm" style="background-color: #2B9996;margin: auto;display: block;" (click)="data($event)">Ajouter un nouveau Agent</button>
+  </div>
+  <div class="table-responsive">
+  <table id="tableau" class="table table-bordered table-striped table-hover datatable js-basic-example">
+    <thead>
+        <tr>
+            <th class=" body text-center">Nom</th>
+            <th class=" body text-center">Prenom</th>
+            <th class=" body text-center">Matricule</th>
+            <th class=" body text-center">Cin</th>
+            <th class=" body text-center">Adresse</th>
+            <th class=" body text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let agentSecurity of agentSecurities">
+            <td style="color:black;width:170px;" class=" body text-center">
+          {{agentSecurity.nom}}
+            </td>
+            <td style="color:black;width:170px;" class=" body text-center">
+              {{agentSecurity.prenom}}
+            </td>
+            <td style="color:black;width:120px;" class=" body text-center">
+              {{agentSecurity.matricule}}
+            </td>
+            <td style="color:black;width:120px;" class=" body text-center">
+              {{agentSecurity.cin}}
+            </td>
+            <td style="color:black;width:200px;" class=" body text-center">
+              {{agentSecurity.adresse}}
+            </td>
+            <td class=" body text-center" style="width: 176px;">
+  <button type="button" class="btn btn-sm btn-primary edit"style="background-color: #36B79E;" [value]="agentSecurity.id" (click)="onClick($event)"> Modifier</button> <button class="btn btn-sm btn-danger delete"style="background-color: #DC3F2C;" (click)="deleteAgent(agentSecurity)"> Supprimer</button>
+            </td>
+        </tr>
+      </tbody>
+     </table>
+  </div>
+
+                </div>
+                  <!-- stoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooop -->
+                </div>
+
+        </div>
+    </div>
+  </section>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+
+  <div class="modal fade" id="myModal" role="dialog" *ngIf="isLoggedIn">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+
+          <h4 class="modal-title" style="margin-left:150px;">Ajouter Agent de securité</h4>
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+       </div>
+       <div class="modal-body">
+      <form role="form" id="feragh" [formGroup]="AgentForm">
+          <div class="form-group">
+              <label for="nom">Nom</label>
+              <input type="text" name="nom" id="nom" class="form-control" formControlName="nom" [(ngModel)]="agent.nom"  />
+          </div>
+          <!--[class.is-invalid]="hh&&zz"   //cadre mtaa input-->
+          <!--[class.d-done] = "hh||""-->
+          <!--pattern : "^\d{8}$"-->
+          <div class="alert alert-danger" *ngIf="AgentForm.controls['nom'].errors && (AgentForm.controls['nom'].touched||AgentForm.controls['nom'].dirty)">
+              <div [hidden]="!AgentForm.controls['nom'].errors.required">Le Nom is obligatoire ! </div>
+              <div [hidden]="!AgentForm.controls['nom'].errors.pattern">le Nom doit ne doit etre composer qu'avec des alphabets ! </div>
+          </div>
+          <div class="form-group">
+              <label for="prenom">Prenom</label>
+              <input type="text" name="prenom" id="prenom" class="form-control" formControlName="prenom" [(ngModel)]="agent.prenom"  />
+          </div>
+          <div class="alert alert-danger" *ngIf="AgentForm.controls['prenom'].errors && (AgentForm.controls['prenom'].touched||AgentForm.controls['prenom'].dirty)">
+              <div [hidden]="!AgentForm.controls['prenom'].errors.required">Le Prenom is obligatoire ! </div>
+              <div [hidden]="!AgentForm.controls['prenom'].errors.pattern">le Prenom doit ne doit etre composer qu'avec des alphabets ! </div>
+          </div>
+        <div class="form-group">
+              <label for="matricule">Matricule</label>
+              <input type="text" name="Matricule" id="Matricule" class="form-control" formControlName="Matricule" [(ngModel)]="agent.matricule"  />
+          </div>
+          <div class="alert alert-danger" *ngIf="AgentForm.controls['Matricule'].errors && (AgentForm.controls['Matricule'].touched||AgentForm.controls['Matricule'].dirty)">
+              <div [hidden]="!AgentForm.controls['Matricule'].errors.required">La Matricule is obligatoire ! </div>
+              <div [hidden]="!AgentForm.controls['Matricule'].errors.pattern">la Matricule doit ne doit etre composer qu'avec des chiffres ! </div>
+          </div>
+          <div class="form-group">
+              <label for="cin">Cin</label>
+           <input id="Cin" type="text" class="form-control" name="Cin" [(ngModel)]="agent.cin" formControlName="Cin"/>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="AgentForm.controls['Cin'].errors && (AgentForm.controls['Cin'].touched||AgentForm.controls['Cin'].dirty)">
+          <div [hidden]="!AgentForm.controls['Cin'].errors.required">La Cin is obligatoire ! </div>
+          <div [hidden]="!AgentForm.controls['Cin'].errors.pattern">la Cin doit ne doit etre composer qu'avec des chiffres ! </div>
+          <div [hidden]="!(AgentForm.controls['Cin'].errors.maxlength || AgentForm.controls['Cin'].errors.minlength)"> le Cin doit etre composer de 8 chiffres</div>
+      </div>
+       <div class="form-group">
+        <label for="adresse">Adresse</label>
+     <input id="Adresse" type="text" class="form-control" name="Adresse" [(ngModel)]="agent.adresse" formControlName="Adresse" />
+  </div>
+  <div class="alert alert-danger" *ngIf="AgentForm.controls['Adresse'].errors && (AgentForm.controls['Adresse'].touched||AgentForm.controls['Adresse'].dirty)">
+      <div [hidden]="!AgentForm.controls['Adresse'].errors.required">L'Adresse is obligatoire ! </div>
+      <div [hidden]="!AgentForm.controls['Adresse'].errors.pattern">l'Adresse doit ne doit etre composer qu'avec des alphabets ! </div>
+  </div>
+  <div class="form-group">
+      <label for="trajectoire">trajectoire</label>
+    <select class="custom-select" (change)="onChange($event)" formControlName="select">
+      <option disabled>choisir un trajectoire</option>
+      <option *ngFor="let traj of Trajectoires" [value]="traj.id">{{traj.nom}}</option>
+    </select>
+  </div>
+    <button type="submit" id="boutton" class="btn btn-success btn-block" (click)="addAgent()" [disabled]="AgentForm.pristine || AgentForm.invalid">Ajouter</button>
+    </form>
+           </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-danger btn-sm" style="margin:auto;display:block;"data-dismiss="modal">Cancel</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="update" role="dialog" *ngIf="isLoggedIn">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+
+            <h4 class="modal-title" style="margin-left:150px;">Modifier Agent de securité</h4>
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <div class="modal-body">
+        <form role="form" id="feragh" [formGroup]="AgentForm">
+            <input hidden type="text" value="{{updatedAgent.id}}" [(ngModel)]="updatedAgent.id" [ngModelOptions]="{standalone: true}" />
+            <div class="form-group">
+                <label for="nom">Nom</label>
+                <input type="text" name="nom" id="nom" class="form-control" value="{{updatedAgent.nom}}"[(ngModel)]="updatedAgent.nom" [ngModelOptions]="{standalone: true}" />
+            </div>
+
+            <div class="form-group">
+                <label for="prenom">Prenom</label>
+                <input type="text" name="prenom" id="prenom" class="form-control" value="{{updatedAgent.prenom}}"[(ngModel)]="updatedAgent.prenom" [ngModelOptions]="{standalone: true}" />
+            </div>
+          <div class="form-group">
+                <label for="matricule">Matricule</label>
+                <input type="text" name="Matricule" id="Matricule" class="form-control" value="{{updatedAgent.matricule}}"[(ngModel)]="updatedAgent.matricule"  [ngModelOptions]="{standalone: true}"/>
+            </div>
+            <div class="form-group">
+                <label for="cin">Cin</label>
+             <input id="Cin" type="text" class="form-control" name="Cin" value="{{updatedAgent.cin}}"[(ngModel)]="updatedAgent.cin" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+       <input id="Adresse" type="text" class="form-control" name="Adresse" value="{{updatedAgent.adresse}}"[(ngModel)]="updatedAgent.adresse" [ngModelOptions]="{standalone: true}"/>
+  </div>
+  <button type="submit" id="boutton" class="btn btn-success btn-block" >Modifer</button>
+  </form>
+         </div>
+  <div class="modal-footer">
+      <button type="submit" class="btn btn-danger btn-sm" style="margin:auto;display:block;"data-dismiss="modal">Cancel</button>
+    </div>
+    </div>
+  </div>
+  </div>
+  <ng-template #loggedOut>
+      <div class="container" style="margin-top: 15em">
+          <div class="row justify-content-center">
+           <div class="alert alert-danger">
+              vous devez être connecter pour consulter cette page !!
+           </div>
+
+          </div>
+          <div class="row justify-content-center">
+          <button type="submit" class="btn btn-primary btn-m rounded-pill" (click)="clicker()">Connecter</button>
+        </div>
+            </div>
+  </ng-template>

@@ -1,0 +1,42 @@
+
+.modal-header, h4, .close {
+  background-color: #5cb85c;
+  color:white !important;
+  text-align: center;
+  font-size: 15px;
+}
+.modal-footer {
+  background-color: #f9f9f9;
+}
+.tab {
+
+  float: left;
+  background-color: #293462;
+ /* position: -webkit-sticky;664px*/
+  position: sticky;
+  top: 0;
+  width: 18%;
+  height: 664px;
+  margin:auto;
+}
+/*.nav{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}*/
+ul{
+  list-style-type: none;
+}
+li{
+  color:white;
+}
+.material-icons {
+  font-size: 16px;
+}
+a{
+  color:white;
+}
+.active-open{
+color:#A7A37E;
+text-decoration: underline;
+}

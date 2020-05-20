@@ -1,0 +1,102 @@
+<app-nav *ngIf="isLoggedIn; else loggedOut"></app-nav>
+<section class="content home" *ngIf="isLoggedIn">
+    <div class="row clearfix">
+        <div class="col-lg-20 col-md-12">
+            <div class="row clearfix ">
+                <div class="col-lg-12">
+                    <div class="card breadcrumb" style="height: 5em;">
+                        <ul class="row profile_state list-unstyled">
+                            <li class="col-lg-3 col-md-3 col-6">
+                                <div class="body">
+
+                                    <h4 style="background-color: #2947c0">
+                                       {{nombreEmplacement}}
+                                    </h4>
+                                    <span class=" ml-4"style="color: black;">Nombre des Emplacements</span>
+                                </div>
+                            </li>
+                            <li class="col-lg-3 col-md-3 col-6">
+                                <div>
+                                <h4 style="background-color: #2947c0">{{nombreBeacon}}</h4>
+                                    <span class=" ml-5" style="color: black;">Nombre des Beacons</span>
+                                </div>
+                            </li>
+                            <li class="col-lg-3 col-md-3 col-6">
+                                <div class="body">
+
+                                   <h4 style="background-color: #2947c0">{{nombreTrajectoire}}</h4>
+                                    <span class=" ml-4"style="color: black;">Nombres des Trajectoires</span>
+                                </div>
+                            </li>
+                            <li class="col-lg-3 col-md-3 col-6">
+                                <div class="body">
+
+                                   <h4 style="background-color: #2947c0">{{nombreAgent}}</h4>
+                                    <span class=" ml-5"style="color: black;">Nombre des Agents</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+      </div>
+      </div>
+      </div>
+<!-------------------------col-6 col-md-4--------------------------------------->
+
+<div class="row">
+    <div class="col-lg-20 col-md-12">
+        <div class="row clearfix ">
+            <div class="col-lg-12">
+                <div class="breadcrumb" style="height: 4em;">
+<select class="custom-select col-lg-3 col-md-6 "(change)="onChange($event)" style="margin-left: 6em">
+  <option disabled="true">-- choisir Un Beacon--</option>
+  <option *ngFor="let beacon of beacons" [value]="beacon.reference">{{beacon.reference}}</option>
+</select>
+<p *ngIf="UnEmp" style="margin-left: 6em;margin-top: 5px;"> le Beacon de référence <span style="color: blue">{{variable}}</span> ce trouve dans: <span style="color: blue">{{UnEmp.nom}} </span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+    <div class="col-lg-20 col-md-12">
+        <div class="row clearfix ">
+            <div class="col-lg-12">
+                <div class="breadcrumb" style="height: 25em;">
+<select class="custom-select col-lg-3 col-md-6 "(change)="onChangeAgent($event)" style="margin-left: 6em">
+  <option disabled="true">-- choisir Un Agent--</option>
+  <option *ngFor="let agent of agents" [value]="agent.nom">{{agent.nom}} {{agent.prenom}}</option>
+</select>
+<p *ngIf="traj" style="margin-left: 6em;"> Cet Agent a le trajectoire : <span style="color: blue">{{traj.nom}} </span>à faire, Avec les emplacements: <br/> <span style="color: blue" *ngFor="let emp of traj.emplacements">{{emp.nom}} </span></p>
+
+<div *ngIf="traj" style="margin: auto;display: block;">
+<agm-map id="map" [latitude]="latitude" [longitude]="longitude">
+    <agm-marker (mouseOver)="window.open()" (mouseOut)="window.close()" *ngFor="let emp of traj.emplacements" [latitude]="emp.latitude" [longitude]="emp.longitude">
+        <agm-info-window #window>
+            <h6>Longitude: {{emp.longitude}}</h6>
+            <h6>Latitude: {{emp.latitude}}</h6>
+          </agm-info-window>
+    </agm-marker>
+    </agm-map>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<ng-template #loggedOut>
+    <div class="container" style="margin-top: 15em">
+        <div class="row justify-content-center">
+         <div class="alert alert-danger">
+            vous devez être connecter pour consulter cette page !!
+         </div>
+
+        </div>
+        <div class="row justify-content-center">
+        <button type="submit" class="btn btn-primary btn-m rounded-pill" (click)="clicker()">Connecter</button>
+      </div>
+          </div>
+</ng-template>
+

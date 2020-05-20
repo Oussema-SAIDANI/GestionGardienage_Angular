@@ -1,0 +1,95 @@
+
+<div *ngIf="isLoggedIn; else loggedOut">
+ <div class="container" style="margin-top: 10em">
+  <div class="row justify-content-center">
+          <form class="form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+<div style="text-align: center;">
+                      <img src="assets/images/Logo-SFM.png" alt="" style="width: 9em;">
+                    </div>
+              <div class="input-group intput-lg mb-4">
+                  <input type="text" class="form-control" placeholder="username" name ="username" [(ngModel)]="form.username" #username="ngModel" required>
+                  <div class="input-group-append">
+                    <span class="input-group-text bg-transparent"> <i class="zmdi zmdi-account-circle"></i></span>
+                    </div>
+                   <!-- <div *ngIf="f.submitted && username.invalid">
+                      <div *ngIf="username.errors.required">Username is required</div>
+                    </div>-->
+                  </div>
+
+                <div class="input-group intput-lg mb-4">
+                  <input type="password" class="form-control" [(ngModel)]="form.password" #password="ngModel" placeholder="saisir le mot de passe" name="password" requiered>
+                  <div class="input-group-append">
+                      <span class="input-group-text bg-transparent"> <i class="zmdi zmdi-lock"></i></span>
+                      </div>
+                    <!--  <div *ngIf="f.submitted && password.invalid">
+                        <div *ngIf="password.errors.required">Password is required</div>
+                      </div>-->
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-m btn-block rounded-pill">Connecter</button>
+                <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
+                 username et/ou password incorrects
+                </div>
+              </form>
+      </div>
+      </div>
+
+    <div style="margin-top: 14em;margin-left: 60em">
+        <div class="copyright">
+            &copy;
+        2019,
+            <span>Powered by <a href="https://www.sfmtechnologies.com" target="_blank">SFM Technologies</a></span>
+        </div>
+      </div>
+</div>
+<ng-template #loggedOut>
+   <div class="container" style="margin-top: 10em" >
+        <div class="row justify-content-center">
+                <form class="form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+<div style="text-align: center;">
+                            <img src="assets/images/Logo-SFM.png" alt="" style="width: 9em;">
+                          </div>
+                    <div class="input-group intput-lg mb-4" style="width: 17em">
+                        <input type="text" class="form-control" placeholder="username" name ="username" [(ngModel)]="form.username" #username="ngModel" required>
+                        <div class="input-group-append">
+                          <span class="input-group-text bg-transparent"> <i class="zmdi zmdi-account-circle"></i></span>
+                          </div>
+                         <!-- <div *ngIf="f.submitted && username.invalid">
+                            <div *ngIf="username.errors.required">Username is required</div>
+                          </div>-->
+                        </div>
+
+                      <div class="input-group intput-lg mb-4" style="width: 17em">
+                        <input type="password" class="form-control" [(ngModel)]="form.password" #password="ngModel" placeholder="saisir le mot de passe" name="password" requiered>
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent"> <i class="zmdi zmdi-lock"></i></span>
+                            </div>
+                          <!--  <div *ngIf="f.submitted && password.invalid">
+                              <div *ngIf="password.errors.required">Password is required</div>
+                            </div>-->
+                      </div>
+
+                      <button type="submit" class="btn btn-primary btn-m btn-block rounded-pill" style="width: 17em">Connecter</button><br/>
+                      <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
+                       username et/ou password incorrects
+                      </div>
+
+                    </form>
+
+            </div>
+            </div>
+
+          <div style="margin-top: 9em;margin-left: 63em">
+              <div class="copyright">
+                  &copy;
+              2019,
+                  <span>Powered by <a href="https://www.sfmtechnologies.com" target="_blank">SFM Technologies</a></span>
+              </div>
+            </div>
+          </ng-template>
+
+
+
+

@@ -1,0 +1,171 @@
+<app-nav *ngIf="isLoggedIn; else loggedOut"></app-nav>
+<section class="content home" *ngIf="isLoggedIn">
+    <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card mt-5">
+                      <div class="container">
+  <div class="breadcrumb mt-3">
+  <button type="button" name="add" id="add_data" class="btn btn-success btn-sm" style="background-color: #2B9996;margin: auto;display: block;" (click)="data($event)">Ajouter un nouveau Emplacement</button>
+  </div>
+  <div class="table-responsive">
+  <table id="tableau" class="table table-bordered table-striped table-hover datatable js-basic-example">
+    <thead>
+        <tr>
+            <th class=" body text-center">Nom</th>
+            <th class=" body text-center">Longitude</th>
+            <th class=" body text-center">Latitude</th>
+            <th class=" body text-center">BeaconRef</th>
+            <th class=" body text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let emplacement of emplacements">
+            <td style="color:black;width:170px;" class=" body text-center">
+                {{emplacement.nom}}
+            </td>
+            <td style="color:black;width:170px;" class=" body text-center">
+              {{emplacement.longitude}}
+            </td>
+            <td style="color:black;width:170px;" class=" body text-center">
+                {{emplacement.latitude}}
+              </td>
+              <td style="color:black;width:170px;" class=" body text-center">
+                  {{emplacement.beacon.reference}}
+                </td>
+            <td class=" body text-center" style="width: 176px;">
+  <button type="button" class="btn btn-sm btn-primary edit"style="background-color: #36B79E;" [value]="emplacement.id" (click)="onClick($event)"> Modifier</button> <button class="btn btn-sm btn-danger delete"style="background-color: #DC3F2C;" (click)="deleteEmplacement(emplacement)"> Supprimer</button>
+            </td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+  <!-- stoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooop -->
+</div>
+
+</div>
+</div>
+</section>
+<br/>
+<div *ngIf="bool">
+<agm-map id="map" [latitude]="latitude" [longitude]="longitude" *ngIf="isLoggedIn">
+<agm-marker (mouseOver)="window.open()" (mouseOut)="window.close()" *ngFor="let emp of emplacements" [latitude]="emp.latitude" [longitude]="emp.longitude">
+    <agm-info-window #window>
+        <h6>Longitude: {{emp.longitude}}</h6>
+        <h6>Latitude: {{emp.latitude}}</h6>
+      </agm-info-window>
+</agm-marker>
+</agm-map>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<div class="modal fade" id="myModal" role="dialog" *ngIf="isLoggedIn">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+
+          <h4 class="modal-title" style="margin-left:150px;">Ajouter un Emplacement</h4>
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+       </div>
+       <div class="modal-body">
+      <form role="form" id="feragh" [formGroup]="EmplacementForm">
+          <div class="form-group">
+              <label for="nom">Nom</label>
+              <input type="text" name="nom" id="nom" class="form-control" formControlName="nom"[(ngModel)]="emplacement.nom"/>
+          </div>
+          <div class="alert alert-danger" *ngIf="EmplacementForm.controls['nom'].errors && (EmplacementForm.controls['nom'].touched||EmplacementForm.controls['nom'].dirty)">
+              <div [hidden]="!EmplacementForm.controls['nom'].errors.required">Le Nom est obligatoire ! </div>
+              <div [hidden]="!EmplacementForm.controls['nom'].errors.pattern">le Nom doit ne doit etre composer qu'avec des alphabets ! </div>
+          </div>
+          <div class="form-group">
+            <label> Cliquer sur le map pour enregistrer les coordonnées</label>
+          <agm-map [latitude]="latitude" [longitude]="longitude" (mapClick)="onChooseLocation($event)">
+              <agm-marker
+              [latitude]="lat"
+              [longitude]="lng"
+              *ngIf="locationChosen"></agm-marker>
+                </agm-map>
+          </div>
+          <div class="form-group" >
+          <input disabled type="text" value="{{lat}}"/>
+          </div>
+          <div class="form-group" >
+            <input disabled type="text" value="{{lng}}"/>
+          </div>
+                <div class="form-group">
+                  <label for="beacon">Beacon</label>
+          <select class="custom-select" (change)="onChange($event)" formControlName="select">
+            <option [disabled]="true">choisir un beacon</option>
+             <option *ngFor="let beacon of beacons" [value]="beacon.id">{{beacon.reference}}</option>
+            </select>
+            </div>
+          <button type="submit" id="boutton" class="btn btn-success btn-block" (click)="addEmplacement()" [disabled]="EmplacementForm.pristine || EmplacementForm.invalid">Ajouter</button>
+        </form>
+               </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger btn-sm" style="margin:auto;display:block;"data-dismiss="modal">Cancel</button>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="update" role="dialog" *ngIf="isLoggedIn">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" style="margin-left:150px;">Modifier un Emplacement</h4>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+             </div>
+             <div class="modal-body">
+              <form role="form" id="feragh" [formGroup]="EmplacementForm">
+                <input hidden type="text" value="{{updatedEmplacement.id}}" [(ngModel)]="updatedEmplacement.id" [ngModelOptions]="{standalone: true}" />
+                  <div class="form-group">
+                      <label for="nom">Nom</label>
+                      <input type="text" name="nom" id="nom" class="form-control" value="{{updatedEmplacement.nom}}" [(ngModel)]="updatedEmplacement.nom" [ngModelOptions]="{standalone: true}" />
+                  </div>
+                  <div class="form-group" >
+                    <agm-map [latitude]="latitude" [longitude]="longitude" (mapClick)="onChooseLocation($event)">
+                        <agm-marker
+                        [latitude]="lat"
+                        [longitude]="lng"
+                        *ngIf="locationChosen"></agm-marker>
+                          </agm-map>
+                    </div>
+                  <div class="form-group" >
+                    <input disabled type="text" value="{{lat}}"/>
+                    </div>
+                    <div class="form-group" >
+                      <input disabled type="text" value="{{lng}}"/>
+                    </div>
+                    <div class="form-group">
+                      <select class="custom-select" (change)="onChange($event)" >
+                          <option disabled>choisir un Beacon</option>
+                         <option *ngFor="let beacon of beacons" [value]="beacon.id">{{beacon.reference}}</option>
+                        </select>
+                        </div>
+                <button type="submit" id="boutton" class="btn btn-success btn-block" (click)="updateEmplacement()">Modifier</button>
+              </form>
+                     </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger btn-sm" style="margin:auto;display:block;"data-dismiss="modal">Cancel</button>
+                </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #loggedOut>
+                <div class="container" style="margin-top: 15em">
+                    <div class="row justify-content-center">
+                     <div class="alert alert-danger">
+                        vous devez être connecter pour consulter cette page !!
+                     </div>
+
+                    </div>
+                    <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-m rounded-pill" (click)="clicker()">Connecter</button>
+                  </div>
+                      </div>
+            </ng-template>

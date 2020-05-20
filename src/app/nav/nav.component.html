@@ -1,0 +1,27 @@
+<!-- Left Sidebar -->
+
+<div class="tab">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item mr-5 ml-4 mb-3 mt-2" style="color:white;"><i class="zmdi zmdi-menu mr-2"></i>Menu</li>
+        <li class="nav-item mt-2 ml-2" style="color:white;"><i class="zmdi zmdi-account mr-2"></i>Admin</li>
+    </ul>
+    <div class="menu">
+        <ul>
+            <li *ngIf="authority === 'admin'" class="mt-5"> <a [routerLink]="['/home']" routerLinkActive="active-open"><i class="zmdi zmdi-home mr-2"></i><span>Acceuil</span></a></li>
+            <li *ngIf="authority === 'admin'"class="mt-5"> <a [routerLink]="['/GestionAgent']" routerLinkActive="active-open"><i class="material-icons mr-2">security</i><span>Gestion Agents</span></a></li>
+            <li *ngIf="authority === 'admin'"class="mt-5"> <a [routerLink]="['/trajectoire']" routerLinkActive="active-open"><i class="material-icons mr-2">map</i><span>Trajectoires</span> </a></li>
+            <li *ngIf="authority === 'admin'"class="mt-5"> <a [routerLink]="['/beacon']" routerLinkActive="active-open"><i class="material-icons mr-2">memory</i><span>Beacons</span> </a></li>
+            <li *ngIf="authority === 'admin'"class="mt-5"> <a [routerLink]="['/emplacement']" routerLinkActive="active-open"><i class="material-icons mr-2">place</i><span>Emplacements</span> </a></li>
+          </ul>
+    </div>
+  </div>
+  <nav class="navbar navbar-light bg-info">
+
+      <img src="assets/images/Logo-SFM.png" width="60"alt="">
+      <div class="navbar-header">
+      <i class="zmdi zmdi-notifications"></i>
+  <i class="zmdi zmdi-power  ml-5" style="color: black;" (click)="logout()"></i>
+    </div>
+  </nav>
+ <!---->
